@@ -8,7 +8,7 @@ exports.createChatroom = async (req, res, next) => {
 
   if (!nameRegex.test(name)) throw "Chatroom name can contain only alphabets";
 
-  const chatroomExists = Chatroom.findOne({ name });
+  const chatroomExists = await Chatroom.findOne({ name });
 
   if (chatroomExists) throw "Chatroom with that name already exists";
 

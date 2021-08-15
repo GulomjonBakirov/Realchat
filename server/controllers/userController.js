@@ -43,3 +43,14 @@ exports.login = async (req, res, next) => {
 
   sendToken(user, 200, res);
 };
+
+exports.logout = async (req, res, next) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+  res.json({
+    success: true,
+    message: "Logged out successfully",
+  });
+};

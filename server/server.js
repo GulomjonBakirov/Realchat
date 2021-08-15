@@ -20,6 +20,6 @@ require("./models/User");
 require("./models/Chatroom");
 require("./models/Message");
 
-app.listen(5000, () => {
-  console.log("Server listen 5000 port");
+app.listen(4000, () => {
+  console.log("Server listen 4000 port");
 });

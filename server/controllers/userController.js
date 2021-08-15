@@ -8,9 +8,6 @@ const comparePassword = require("../models/User");
 exports.register = async (req, res, next) => {
   const { name, email, password } = req.body;
 
-  const emailRegex = /@gmail.com|@yahoo.com|@email.com|@hotmail.com|@live.com/;
-
-  if (!emailRegex.test(email)) throw "Email is not supported from your domain";
   const user = new User({
     name,
     email,

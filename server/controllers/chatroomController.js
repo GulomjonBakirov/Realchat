@@ -22,3 +22,10 @@ exports.getAllChatrooms = async (req, res, next) => {
   const chatrooms = await Chatroom.find({});
   res.json({ chatrooms });
 };
+
+exports.getChatroomById = async (req, res, next) => {
+  const id = req.params.id;
+  console.log(req.params.id);
+  const chatroom = await Chatroom.findById(id);
+  res.json({ chatroom });
+};

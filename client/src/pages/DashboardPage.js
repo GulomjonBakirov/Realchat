@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { logout } from "../actions/userAction";
 import makeToast from "../Toaster";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getAllChatroom } from "../actions/chatroomAction";
 
-const DashboardPage = ({ history }) => {
+const DashboardPage = (props) => {
   const [chatrooms, setChatrooms] = useState([]);
   const dispatch = useDispatch();
 
@@ -16,12 +17,11 @@ const DashboardPage = ({ history }) => {
   const { loading, error, chatroom } = useSelector(
     (state) => state.allChatroom
   );
-  console.log(chatroom);
   const logoutHandler = () => {
     dispatch(logout());
     makeToast("success", "Logged Out successfully");
     localStorage.removeItem("CC_Token");
-    history.push("/");
+    props.history.push("/");
   };
   return (
     <div className="card">
@@ -39,18 +39,17 @@ const DashboardPage = ({ history }) => {
 
         <button>Create Chatroom</button>
         <div className="chatrooms">
-          <div className="chatroom">
-            <div>Kursdoshlar</div>
-            <div className="join">Join</div>
-          </div>
-          <div className="chatroom">
-            <div>Kursdoshlar</div>
-            <div className="join">Join</div>
-          </div>
-          <div className="chatroom">
-            <div>Kursdoshlar</div>
-            <div className="join">Join</div>
-          </div>
+          {chatroom &&
+            chatroom.map((chatroom) => (
+              <div key={chatroom._id} className="chatroom">
+                <div style={{ textTransform: "capitalize" }}>
+                  {chatroom.name}
+                </div>
+                <Link to={`/chatroom/${chatroom._id}`} className="join">
+                  Join
+                </Link>
+              </div>
+            ))}
         </div>
         <button onClick={logoutHandler}>Logout Profile</button>
       </div>

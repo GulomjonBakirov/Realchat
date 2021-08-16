@@ -11,7 +11,7 @@ export const getAllChatroom = () => async (dispatch) => {
     dispatch({ type: ALL_CHATROOMS_REQUEST });
     const config = {
       headers: {
-        Authorization: "Bearer" + localStorage.getItem("CC_Token"),
+        Authorization: `Bearer ${localStorage.getItem("CC_Token")}`,
       },
     };
     console.log(config);

@@ -3,8 +3,9 @@ import makeToast from "../Toaster";
 import { useDispatch, useSelector } from "react-redux";
 
 import { login, clearErrors } from "../actions/userAction";
+import { withRouter } from "react-router-dom";
 
-const LoginPage = ({ history }) => {
+const LoginPage = ({ history, setUpSocket }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,13 +19,14 @@ const LoginPage = ({ history }) => {
       makeToast("success", "Login successfully");
       localStorage.setItem("CC_Token", token);
       history.push("/dashboard");
+      setUpSocket();
     }
 
     if (error) {
       return makeToast("error", error);
       dispatch(clearErrors());
     }
-  }, [dispatch, alert, error, isAuthanticated, history]);
+  }, [dispatch, error, isAuthanticated, history, token, setUpSocket]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -65,4 +67,4 @@ const LoginPage = ({ history }) => {
   );
 };
 
-export default LoginPage;
+export default withRouter(LoginPage);

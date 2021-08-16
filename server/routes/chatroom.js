@@ -16,4 +16,10 @@ router.get(
   catchErrors(chatroomController.getAllChatrooms)
 );
 
+router.get(
+  "/",
+  isAuthanticated,
+  catchErrors(chatroomController.getChatroomById)
+);
+
 module.exports = router;

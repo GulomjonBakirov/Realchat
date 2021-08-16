@@ -1,9 +1,17 @@
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const sha256 = require("js-sha256");
-const jwt = require("jwt-then");
+const jwt = require("jsonwebtoken");
 const sendToken = require("../utils/jwtToken");
 const comparePassword = require("../models/User");
+
+const generateAccessToken = (id) => {
+  const payload = {
+    id,
+  };
+
+  return jwt.sign(payload, process.env.SECRET, { expiresIn: "24h" });
+};
 
 exports.register = async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -19,10 +27,8 @@ exports.register = async (req, res, next) => {
   });
 
   if (userCheck) throw "Email with same email already exists";
-
   await user.save();
-
-  sendToken(user, 200, res);
+  res.json({ user });
 };
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -38,7 +44,10 @@ exports.login = async (req, res, next) => {
 
   if (!isPasswordValid) throw "Valid password or email";
 
-  sendToken(user, 200, res);
+  const token = await jwt.sign({ id: user._id }, process.env.SECRET, {
+    expiresIn: "24h",
+  });
+  return res.json({ token });
 };
 
 exports.logout = async (req, res, next) => {

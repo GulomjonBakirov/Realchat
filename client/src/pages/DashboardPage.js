@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { logout } from "../actions/userAction";
 import makeToast from "../Toaster";
 
 import { useSelector, useDispatch } from "react-redux";
+import { getAllChatroom } from "../actions/chatroomAction";
 
 const DashboardPage = ({ history }) => {
+  const [chatrooms, setChatrooms] = useState([]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllChatroom());
+  }, []);
+
+  const { loading, error, chatroom } = useSelector(
+    (state) => state.allChatroom
+  );
+  console.log(chatroom);
   const logoutHandler = () => {
     dispatch(logout());
     makeToast("success", "Logged Out successfully");

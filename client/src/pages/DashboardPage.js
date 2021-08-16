@@ -1,6 +1,17 @@
 import React from "react";
+import { logout } from "../actions/userAction";
+import makeToast from "../Toaster";
 
-const DashboardPage = () => {
+import { useSelector, useDispatch } from "react-redux";
+
+const DashboardPage = ({ history }) => {
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logout());
+    makeToast("success", "Logged Out successfully");
+    localStorage.removeItem("CC_Token");
+    history.push("/");
+  };
   return (
     <div className="card">
       <div className="cardHeader">Chatrooms</div>
@@ -30,6 +41,7 @@ const DashboardPage = () => {
             <div className="join">Join</div>
           </div>
         </div>
+        <button onClick={logoutHandler}>Logout Profile</button>
       </div>
     </div>
   );

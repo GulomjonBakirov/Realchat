@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { register, clearErrors } from "../actions/userAction";
 
 const RegisterPage = ({ history }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   const dispatch = useDispatch();
 
@@ -17,22 +19,27 @@ const RegisterPage = ({ history }) => {
 
   useEffect(() => {
     if (isAuthanticated) {
+      makeToast("success", "Registered Successfully");
       history.push("/login");
     }
 
     if (error) {
-      return console.log(error);
+      return makeToast("error", error);
       dispatch(clearErrors());
     }
   }, [dispatch, error, isAuthanticated, history]);
 
+  const handle = (e) => {
+    const newData = { ...data };
+    newData[e.target.id] = e.target.value;
+    setData(newData);
+    console.log(newData);
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.set("name", name);
-    formData.set("email", email);
-    formData.set("password", password);
-    dispatch(register(formData));
+    console.log(data);
+    dispatch(register(data));
   };
 
   return (
@@ -47,8 +54,8 @@ const RegisterPage = ({ history }) => {
               name="name"
               id="name"
               placeholder="G'ulomjon"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={data.name}
+              onChange={(e) => handle(e)}
             />
           </div>
           <div className="inputGroup">
@@ -58,8 +65,8 @@ const RegisterPage = ({ history }) => {
               name="email"
               id="email"
               placeholder="abs@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={data.dispatchemail}
+              onChange={(e) => handle(e)}
             />
           </div>
           <div className="inputGroup">
@@ -69,8 +76,8 @@ const RegisterPage = ({ history }) => {
               name="password"
               id="password"
               placeholder="Your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={data.password}
+              onChange={(e) => handle(e)}
             />
           </div>
           <button>Register</button>

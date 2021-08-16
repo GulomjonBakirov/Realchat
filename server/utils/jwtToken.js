@@ -13,7 +13,8 @@ const sendToken = (user, statusCode, res) => {
 
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
-    message: "Registered successfully",
+    token,
+    user,
   });
 };
 
